@@ -25,7 +25,6 @@ const renderGoods = (goods) => {
 				</div>
       `
     );
-    console.log(goodsItem);
   });
 };
 
