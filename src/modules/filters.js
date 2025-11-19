@@ -23,3 +23,13 @@ export const priceFilter = (goods, minValue, maxValue) => {
     }
   });
 };
+
+export const hotsaleFilter = (goods, value) => {
+  return goods.filter((item) => {
+    if (value) {
+      return item.sale === true;
+    } else {
+      return item;
+    }
+  });
+};

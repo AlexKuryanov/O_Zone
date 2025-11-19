@@ -1,6 +1,6 @@
 import getData from './getData';
 import renderGoods from './renderGoods';
-import { categoryFilter, priceFilter } from './filters';
+import { categoryFilter, priceFilter, hotsaleFilter } from './filters';
 
 const catalog = () => {
   const catalogBtn = document.querySelector('.catalog-button > button');
@@ -9,6 +9,8 @@ const catalog = () => {
   const catalogPriceRange = document.querySelector('.filter-price_range');
   const catalogPriceMin = catalogPriceRange.querySelector('#min');
   const catalogPriceMax = catalogPriceRange.querySelector('#max');
+  const checkboxInput = document.getElementById('discount-checkbox');
+  const checkboxSpan = document.querySelector('.filter-check_checkmark');
 
   let isOpen = false;
 
@@ -33,10 +35,34 @@ const catalog = () => {
   catalogPriceRange.addEventListener('input', () => {
     const minPrice = Number(catalogPriceMin.value);
     const maxPrice = Number(catalogPriceMax.value);
-    console.log(minPrice, maxPrice);
 
     getData().then((data) => {
-      renderGoods(priceFilter(data, minPrice, maxPrice));
+      renderGoods(
+        priceFilter(
+          hotsaleFilter(data, checkboxInput.checked),
+          minPrice,
+          maxPrice
+        )
+      );
+    });
+  });
+
+  checkboxInput.addEventListener('change', () => {
+    const minPrice = Number(catalogPriceMin.value);
+    const maxPrice = Number(catalogPriceMax.value);
+    if (checkboxInput.checked) {
+      checkboxSpan.classList.add('checked');
+    } else {
+      checkboxSpan.classList.remove('checked');
+    }
+    getData().then((data) => {
+      renderGoods(
+        priceFilter(
+          hotsaleFilter(data, checkboxInput.checked),
+          minPrice,
+          maxPrice
+        )
+      );
     });
   });
 };
